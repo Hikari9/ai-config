@@ -1,0 +1,8 @@
+# machine-only overrides and backups never leave this machine
+/local/
+/.backups/
+*.bak-*
+.DS_Store
+# trail/graft graph cache
+/graft/
+/.trail/

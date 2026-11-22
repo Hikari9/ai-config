@@ -1,0 +1,6 @@
+#!/bin/sh
+# Names-only view of env files: prints NAME=<set> or NAME=<empty>. Never prints values.
+for f in "$@"; do
+  echo "# $f"
+  awk -F= '/^[[:space:]]*(export[[:space:]]+)?[A-Za-z_][A-Za-z0-9_]*=/ { n=$1; sub(/^[[:space:]]*(export[[:space:]]+)?/,"",n); v=substr($0,length($1)+2); gsub(/^["'"'"']|["'"'"']$/,"",v); print n "=" (v==""?"<empty>":"<set>") }' "$f"
+done

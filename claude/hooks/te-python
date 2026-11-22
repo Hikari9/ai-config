@@ -1,0 +1,22 @@
+#!/bin/bash
+# te-python: TE_PYTHON shim for the tokeneconomizer plugin (te-hook runs: $TE_PYTHON te_bootstrap.py hook ...).
+# Sends hook calls to the warm te-hookd daemon over a unix socket. Any failure (no daemon, no nc,
+# empty answer) falls back to plain python3 with the same payload, so behavior never depends on
+# the daemon. Non-hook modes (the `te` CLI) go straight to python3.
+if [[ $2 != hook ]]; then exec python3 "$@"; fi
+IFS= read -r -d '' payload || true
+# one daemon per plugin root, so a second install never runs another install's code
+key=${1//[^A-Za-z0-9]/_}
+sock=${TE_HOOKD_SOCK:-/tmp/te-hookd-$UID-${key: -48}.sock}
+if [[ -S $sock ]]; then
+  msg=$PWD$'\x1e'${*:3}$'\x1e'$payload
+  for v in $(compgen -e); do msg+=$'\x1e'$v=${!v}; done
+  out=$(printf '%s\x04' "$msg" | /usr/bin/nc -w 6 -U "$sock" 2>/dev/null)
+  if [[ -n $out ]]; then printf '%s\n' "$out"; exit 0; fi
+fi
+# no daemon yet (or it failed): start one for the next call, answer this one directly
+if [[ ! -S $sock ]] || ! /usr/bin/nc -z -U "$sock" 2>/dev/null; then
+  rm -f "$sock" 2>/dev/null
+  ( TE_PYTHON_DAEMON=1 nohup python3 "${TE_HOOKD:-$HOME/.claude/hooks/te-hookd.py}" "$1" "$sock" </dev/null >/dev/null 2>&1 & ) 2>/dev/null
+fi
+exec python3 "$@" <<<"$payload"

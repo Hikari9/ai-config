@@ -1,0 +1,31 @@
+{
+  "defaultModel": "claude-haiku-5-5",
+  "defaultProjectTrust": "always",
+  "defaultProvider": "anthropic",
+  "defaultThinkingLevel": "high",
+  "enabledModels": [
+    "anthropic/claude-opus-5-5",
+    "anthropic/claude-sonnet-5-5",
+    "anthropic/claude-haiku-5-5",
+    "anthropic/claude-fable-5-1",
+    "openai/gpt-6-astra",
+    "openai/gpt-6-luna",
+    "openai/gpt-6.1-sol",
+    "openai/gpt-6.1-terra"
+  ],
+  "hideThinkingBlock": true,
+  "outputPad": 0,
+  "packages": [
+    "npm:context-mode",
+    "npm:pi-graft",
+    "npm:pi-rtk-optimizer",
+    "npm:@tbanowl/pi-exit",
+    "npm:@ollama/pi-web-search",
+    "npm:pi-antigravity",
+    "npm:opencode-pi",
+    "../../Git/TokenEconomizer"
+  ],
+  "quietStartup": true,
+  "showCacheMissNotices": true,
+  "steeringMode": "one-at-a-time"
+}

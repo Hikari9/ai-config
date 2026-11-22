@@ -1,0 +1,15 @@
+{
+  "userSettings": {
+    "permissionGrantsV2Migrated": true,
+    "sandboxEnabledAtV2Migration": true,
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
+    "globalPermissionGrants": {
+      "allow": [
+        "execute_url(localhost)"
+      ]
+    },
+    "browserJsExecutionPolicy": "BROWSER_JS_EXECUTION_POLICY_TURBO",
+    "permissionPreset": "AGENT_PERMISSION_PRESET_TURBO"
+  }
+}

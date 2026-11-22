@@ -1,0 +1,183 @@
+check_for_update_on_startup = false
+model = "gpt-6.2-sol"
+model_context_window = 1000000
+model_auto_compact_token_limit = 900000
+model_reasoning_effort = "high"
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
+notify = [
+  "{{HOME}}/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
+  "turn-ended",
+]
+service_tier = "default"
+model_verbosity = "low"
+
+[features]
+hooks = true
+multi_agent = true
+memories = true
+chronicle = false
+js_repl = false
+
+# Authenticated 2026-10-29 for Favor Event Tickets.
+[mcp_servers.favor_event_tickets]
+url = "https://events.favor.church/mcp"
+enabled = true
+
+# Disabled 2026-10-26: not logged in, so it failed at every Codex startup (warning).
+# To use: `codex mcp login cloudflare-api`, then set enabled = true.
+[mcp_servers.cloudflare-api]
+url = "https://mcp.cloudflare.com/mcp"
+enabled = false
+
+[mcp_servers.favor_event_tickets.tools.attendees]
+approval_mode = "approve"
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY"]
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "{{HOME}}/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "{{HOME}}/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.1117.41037"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{HOME}}/.codex/plugins/cache/openai-bundled/browser/26.1117.41037/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "{{HOME}}/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
+NODE_REPL_LAZY_TRUSTED_WORKER = "0"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+# Was cwd = "." (resolved against the session cwd, so "No such file" outside ~/.codex/computer-use).
+cwd = "{{HOME}}/.codex/computer-use"
+enabled = true
+
+[plugins."context-mode@context-mode"]
+enabled = true
+
+[model_providers.ollama-launch]
+name = "Ollama"
+base_url = "http://127.0.0.1:11434/v1/"
+
+[tui]
+status_line = [
+  "model-with-reasoning",
+  "five-hour-limit",
+  "weekly-limit",
+  "context-used",
+  "current-dir",
+  "git-branch",
+]
+screen_reader_detection_done = true
+resume_cwd = "session"
+fullscreen_transcript = false
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."figma@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."google-calendar@openai-curated"]
+enabled = true
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."rock-favor@rock-favor-marketplace"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."code-review@openai-bundled"]
+enabled = true
+
+[plugins."basecamp-cli@37signals"]
+enabled = true
+
+[plugins."tokeneconomizer@tokeneconomizer"]
+enabled = true
+
+[profiles.ollama-launch]
+model_provider = "ollama-launch"
+
+[marketplaces.rock-favor-marketplace]
+last_updated = "2026-07-22T11:56:00Z"
+source_type = "local"
+source = "{{HOME}}/Git/rock-favor"
+
+[marketplaces.context-mode]
+last_updated = "2026-08-25T12:12:06Z"
+last_revision = "a0d0322687205251d466fdf35d7de6e9b5be4aca"
+source_type = "git"
+source = "https://github.com/mksglu/context-mode.git"
+ref = "main"
+
+[marketplaces.37signals]
+source_type = "git"
+source = "https://github.com/basecamp/claude-plugins.git"
+
+[marketplaces.tokeneconomizer]
+source_type = "local"
+source = "{{HOME}}/.local/share/TokenEconomizer"
+
+[memories]
+generate_memories = true
+use_memories = true
+
+[features.multi_agent_v2]
+hide_spawn_agent_metadata = false
+tool_namespace = "agents"
+
+[mcp_servers.trail]
+command = "trail"
+args = ["mcp"]

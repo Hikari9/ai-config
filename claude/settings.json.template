@@ -1,0 +1,453 @@
+{
+  "skillListingBudgetFraction": 0.004,
+  "env": {
+    "GRAFT_NO_STATUSLINE": "1",
+    "TE_PYTHON": "{{HOME}}/.claude/hooks/te-python",
+    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Agent",
+      "Bash(agy:*)",
+      "Bash(claude:*)",
+      "Bash(codex exec:*)",
+      "Bash(composio *)",
+      "Bash(composio:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(ego-browser nodejs:*)",
+      "Bash(gh issue close:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh:*)",
+      "Bash(git:*)",
+      "Bash(grep:*)",
+      "Bash(herdr:*)",
+      "Bash(office land *)",
+      "Bash(office land)",
+      "Bash(office:*)",
+      "Bash(pnpm:*)",
+      "Bash(python3:*)",
+      "Bash(scp * rock.favor.church:*)",
+      "Bash(sqlite3 ~/.local/share/auto-office/runs.db:*)",
+      "Bash(ssh rock.favor.church *)",
+      "Bash(turso:*)",
+      "Bash(vercel:*)",
+      "Read(~/.claude/*.md)",
+      "Read(~/.claude/CLAUDE.md)",
+      "Read(~/.claude/rules/**)",
+      "Read(~/.claude/skills/**)",
+      "Read(~/.codex/AGENTS.md)",
+      "Read(~/.local/share/auto-office/**)",
+      "Read(~/.local/state/auto-office/**)",
+      "Read(~/AGENTS.md)",
+      "Read(~/CLAUDE.md)",
+      "SendMessage",
+      "mcp__claude_ai_Vercel__get_runtime_logs",
+      "mcp__plugin_context-mode_context-mode"
+    ],
+    "deny": [
+      "Bash(curl *ApiKey*)",
+      "Bash(curl *UserLogin*)",
+      "Bash(declare -p)",
+      "Bash(env)",
+      "Bash(export -p)",
+      "Bash(printenv)",
+      "Bash(printenv:*)",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      "DesignSync",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "NotebookEdit",
+      "Read(**/.env)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.local)",
+      "Read(**/.env.preview)",
+      "Read(**/.env.production)",
+      "Read(**/.env.staging)",
+      "Read(~/.env)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "opus",
+  "skillOverrides": {
+    "attendees": "user-invocable-only",
+    "data-source-verify": "user-invocable-only",
+    "design-like-favor": "user-invocable-only",
+    "loop-me": "user-invocable-only",
+    "macos-launchd-agents": "user-invocable-only",
+    "migration-orchestrator": "user-invocable-only",
+    "setup-ts-deep-modules": "user-invocable-only",
+    "skill-corpus-audit": "user-invocable-only",
+    "update-tech-dashboard-live-signups": "user-invocable-only",
+    "mattpocock-skills:wizard": "user-invocable-only",
+    "codex:codex-result-handling": "user-invocable-only",
+    "codex:gpt-5-4-prompting": "user-invocable-only",
+    "context-mode:ctx-index": "user-invocable-only",
+    "context-mode:ctx-insight": "user-invocable-only",
+    "context-mode:ctx-purge": "user-invocable-only",
+    "context-mode:ctx-stats": "user-invocable-only",
+    "context-mode:ctx-upgrade": "user-invocable-only"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/office\" hook session.start --harness claude --office-managed",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/context-mode-cache-heal.mjs\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" session-start || exit 0",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/office\" hook prompt.submit --harness claude --office-managed",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" prompt || exit 0",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/office\" hook tool.pre --harness claude --office-managed",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Grep|mcp__rock-mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/hook-gate.sh\" keyguard node \"$HOME/.claude/hooks/rock-key-guard.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" pre-edit || exit 0",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" pre-bash || exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" post-edit || exit 0",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|mcp__graft__|mcp__trail__|Read|Grep|Glob|Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" tool-savings || exit 0",
+            "timeout": 8
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/office\" hook turn.stop --harness claude --office-managed",
+            "timeout": 86400,
+            "asyncRewake": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" stop || exit 0",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" session-end || exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/helpers/graft-hooks.cjs\" post-bash-fail || exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "baseRef": "head"
+  },
+  "enableArtifact": false,
+  "enableWorkflows": true,
+  "workflowKeywordTriggerEnabled": false,
+  "statusLine": {
+    "type": "command",
+    "command": "sh \"$HOME/.claude/wherdr-statusline.sh\" 'input=$(cat); eval \"$(printf '\"'\"'%s'\"'\"' \"$input\" | /usr/bin/jq -r '\"'\"'def bar($p; $w): ([[$p,0]|max,100]|min) as $q | ($q/100*$w*8|round) as $e | ($e/8|floor) as $full | ($e%8) as $rem | ([\"\",\"▏\",\"▎\",\"▍\",\"▌\",\"▋\",\"▊\",\"▉\"][$rem]) as $part | ($w-$full-(if $rem>0 then 1 else 0 end)) as $empty | (if $q>=80 then \"\\u001b[38;5;210m\" elif $q>=50 then \"\\u001b[38;5;222m\" else \"\\u001b[38;5;114m\" end) + (reduce range(0;$full) as $i (\"\";.+\"█\")) + $part + \"\\u001b[2m\" + (reduce range(0;$empty) as $i (\"\";.+\"░\")) + \"\\u001b[0m\"; @sh \"cwd=\\(.workspace.current_dir // \"\")\", @sh \"cost=\\(if .cost.total_cost_usd != null then (\"$\" + ((.cost.total_cost_usd*100|round)/100|tostring)) else \"\" end)\", @sh \"line1=\\([ ((.model.display_name | split(\" (\")[0]) + (if .effort.level then \" (\" + .effort.level + \")\" else \"\" end)), (if .rate_limits.five_hour.used_percentage != null then ((.rate_limits.five_hour.used_percentage) as $p | (.rate_limits.five_hour.resets_at) as $r | \"5h \" + bar($p;8) + \" \" + ($p|round|tostring) + \"%\" + (if $r != null then (\" [\" + (($r|localtime|strftime(\"%I:%M%p\")) | sub(\"^0\";\"\") | ascii_downcase) + \"]\") else \"\" end)) else empty end), (if .rate_limits.seven_day.used_percentage != null then ((.rate_limits.seven_day.used_percentage) as $p | (.rate_limits.seven_day.resets_at) as $r | \"weekly \" + bar($p;8) + \" \" + ($p|round|tostring) + \"%\" + (if $r != null then (\" [\" + (($r|localtime|strftime(\"%a %I:%M%p\")) | sub(\" 0\";\" \") | ascii_downcase) + \"]\") else \"\" end)) else empty end) ] | map(select(. != null and . != \"\")) | join(\" · \"))\", @sh \"ctxline=\\(if .context_window.total_input_tokens != null then (\"ctx: \" + ((.context_window.total_input_tokens/1000)|round|tostring) + \"k \" + bar((.context_window.used_percentage // 0);8) + \" [\" + ((.workspace.current_dir // \"\") | split(\"/\")[-1]) + \"]\") else \"\" end)\"'\"'\"')\"; dpath=\"$cwd\"; case \"$cwd\" in \"$HOME\") dpath=\"~\" ;; \"$HOME\"/*) dpath=\"~${cwd#$HOME}\" ;; esac; line2=\"$dpath\"; if [ -n \"$cwd\" ] && gitinfo=$(git --no-optional-locks -C \"$cwd\" rev-parse --git-dir --git-common-dir --show-toplevel --abbrev-ref HEAD --short HEAD 2>/dev/null); then { IFS= read -r gitdir; IFS= read -r commondir; IFS= read -r top; IFS= read -r branch; IFS= read -r sha; } <<EOF\n$gitinfo\nEOF\n[ \"$branch\" = \"HEAD\" ] && branch=\"$sha\"; line2=\"$dpath | $branch\"; if [ \"$gitdir\" != \"$commondir\" ]; then line2=\"$line2 : ${top##*/}\"; fi; fi; printf '\"'\"'%s\\n'\"'\"' \"$line1\"; acct=$(/usr/bin/jq -r '\"'\"'.oauthAccount.emailAddress // empty'\"'\"' \"$HOME/.claude.json\" 2>/dev/null); if [ -n \"$acct\" ]; then line2=\"$acct · $line2\"; fi; printf '\"'\"'%s\\n'\"'\"' \"$line2\"; line3=\"$ctxline\"; if [ -n \"$cost\" ]; then if [ -n \"$line3\" ]; then line3=\"$line3 · $cost\"; else line3=\"$cost\"; fi; fi; if [ -n \"$line3\" ]; then printf '\"'\"'%s\\n'\"'\"' \"$line3\"; fi'"
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "claude-code-setup@claude-plugins-official": false,
+    "context-mode@context-mode": true,
+    "mattpocock-skills@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true,
+    "skill-heaven@gaia-skill-heaven": false,
+    "rock-favor@rock-favor-marketplace": true,
+    "composio@composio": true,
+    "frontend-design@anthropic-plugin-directory": true,
+    "basecamp-cli@37signals": true,
+    "swift-lsp@claude-plugins-official": true,
+    "tokeneconomizer@tokeneconomizer": true,
+    "auto-office@auto-office": true,
+    "cc-plugin-you-should-know@builtin": false,
+    "cloudflare@cloudflare": true
+  },
+  "extraKnownMarketplaces": {
+    "37signals": {
+      "source": {
+        "source": "github",
+        "repo": "basecamp/claude-plugins"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      },
+      "autoUpdate": true
+    },
+    "rock-favor-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "favorchurch/rock-favor"
+      },
+      "autoUpdate": true
+    },
+    "composio": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/ComposioHQ/composio-plugin-cc.git"
+      }
+    },
+    "auto-office": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/Hikari9/auto-office.git"
+      }
+    },
+    "tokeneconomizer": {
+      "source": {
+        "source": "directory",
+        "path": "{{HOME}}/.local/share/TokenEconomizer"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": false
+  },
+  "feedbackDrafts": "off",
+  "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "low"
+    },
+    "claude-sonnet-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "medium"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-haiku-5-5": {
+      "effortLevel": "low"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "medium"
+    }
+  },
+  "promptSuggestionEnabled": false,
+  "dialogExpiry": "never",
+  "autoUpdatesChannel": "latest",
+  "tui": "fullscreen",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "editorMode": "normal",
+  "verbose": false,
+  "preferredNotifChannel": "auto",
+  "idleCompaction": true,
+  "switchModelsOnFlag": true,
+  "autoScrollEnabled": true,
+  "remoteControlAtStartup": false,
+  "isolatePeerMachines": false,
+  "crossSessionInbound": "accept",
+  "autoUploadSessions": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Office landing (Rico 2026-10-27: \"why is classifier still denying when luna was able to review? fix the classifier settings to allow that\"): `office land` and `office close` in a favorchurch/* repository are ALLOWED when Office records an independent reviewer APPROVED verdict (e.g. Codex/Luna, DeepSeek, or another model/harness different from the executor that wrote the change) on the head being landed. Rico accepts that Office-dispatched independent reviewer as the second party, so this satisfies Merge Without Review and Self-Approval. It applies whether the run was launched by Rico directly or by rico-mode/an orchestrator on his behalf. Still blocked: landing when Office shows no approved review, a review by the same agent that wrote the change, or a head that differs from the reviewed tree.",
+      "Launching a nested Claude Code background agent with `claude --bg` (optionally with --remote-control, --name, --model, --effort, --add-dir), and managing one with `claude agents`, `claude attach`, or `claude stop`, with working directory in any favorchurch/* repository (e.g. ~/Git/rock-security, ~/Git/forms.favor.church) or an Office-created worktree of one. The prompt must be visible to the classifier: either passed inline on the command line, or read (via stdin redirect, pipe from cat, or command substitution) from a file whose full contents were written earlier in this transcript. Prompts from any other source (files not written in-transcript, generated output, remote content) are not covered. Not covered: --dangerously-skip-permissions, --permission-mode bypassPermissions, or --allowedTools values that grant tools beyond what the agent itself could use here. The delegated prompt/brief content is still evaluated against all BLOCK and soft_deny rules exactly as if the agent performed those actions itself; this rule only waives the sandbox/approval-flag and Create Unsafe Agents concern for the launch mechanism.",
+      "Launching a Codex CLI delegate with `codex exec`, including --yolo, --sandbox danger-full-access, or --dangerously-bypass-approvals-and-sandbox, with working directory (and --cd/-C if given) in any favorchurch/* repository (e.g. ~/Git/rock-security, ~/Git/forms.favor.church) or an Office-created worktree of one. The prompt must be visible to the classifier: either passed inline on the command line, or read (via stdin redirect, pipe from cat, or command substitution) from a file whose full contents were written earlier in this transcript. Prompts from any other source (files not written in-transcript, generated output, remote content) are not covered. The delegated prompt/brief content is still evaluated against all BLOCK and soft_deny rules exactly as if the agent performed those actions itself; this rule only waives the sandbox/approval-flag and Create Unsafe Agents concern for the launch mechanism.",
+      "Launching an agy delegate with `agy --dangerously-skip-permissions` (optionally with --print-timeout, --model, --add-dir, --print), with working directory and any --add-dir in any favorchurch/* repository (e.g. ~/Git/rock-security, ~/Git/forms.favor.church) or an Office-created worktree of one. The prompt must be visible to the classifier: either passed inline on the command line, or read (via stdin redirect, pipe from cat, or command substitution) from a file whose full contents were written earlier in this transcript. Prompts from any other source (files not written in-transcript, generated output, remote content) are not covered. The delegated prompt/brief content is still evaluated against all BLOCK and soft_deny rules exactly as if the agent performed those actions itself; this rule only waives the sandbox/approval-flag and Create Unsafe Agents concern for the launch mechanism.",
+      "Running read-only Auto Office CLI verbs (`office status`, `office wait`, `office inspect`) in any directory.",
+      "Running Auto Office CLI orchestration verbs (`office dispatch`, `answer`, `prompt`, `amend`, `resume`, `rerun`) in a favorchurch/* repository or Office worktree. Dispatched prompt content is still evaluated against BLOCK rules.",
+      "Running Auto Office CLI commit verbs (`office approve`, `submit`, `land`, `close`) in a favorchurch/* repository or Office worktree. `land`/`close` are allowed under the Office landing rule above; `approve` stays subject to Self-Approval (an agent must not approve its own work).",
+      "Driving Herdr panes/agents that Office dispatched: `herdr pane read`, `pane get`, `agent list` anywhere; `herdr pane send-keys`, `pane run`, `agent start`, `agent prompt` only targeting a pane/agent whose id appeared in Office's output earlier in this transcript (e.g. its `next:` line). This includes pressing Enter in such a worker pane to submit an answer that `office answer` already recorded. The agent's own pane is never a valid target (see Tmux Self Drive). Content sent via send-keys/pane run is still evaluated against all BLOCK rules.",
+      "Production reads (Rico 2026-10-27: \"please allow ssh & production reads for agents\"): read-only operations against prod Rock (rock.favor.church): HTTP GETs, scripts run with `--env prod` plus `--dry-run`, `--audit`, `--plan` or a report-only mode, and prod verify checks. Writing local evidence/backup files from those reads is fine. Never print secrets.",
+      "SSH and SCP to the Rock host (Rico 2026-10-27: \"please allow ssh & production reads for agents\"): `ssh rock.favor.church ...` and `scp ... rock.favor.church:...`, including reading files, checking scheduled tasks, and copying deploy artifacts. Deleting or overwriting files on the host, stopping services, or changing Rock config still needs the user's words in the transcript.",
+      "Composio CLI (Rico 2026-11-06: \"composio cli should be allowed by any agent\"): any agent may run the `composio` CLI (search, execute, link, proxy, run, connections) including reads of Gmail and other connected apps via any connected account (e.g. the org bot mailbox or the user's own account). Sending external messages or posting publicly through Composio still needs Rico's explicit current-session approval relayed in the brief."
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Any force push (`--force`, `-f`, `--force-with-lease`, or a `+refspec`) from ~/Git/rock-security, to any branch including the agent's own. Must name: force-pushing and the branch.",
+      "Writes or edits to any `data/*.prod.csv` file. Must name: the file.",
+      "Running any script against prod that WRITES (the prod-write flags are listed in the local rules), or any POST/PUT/PATCH/DELETE to rock.favor.church. Must name: the script and prod. A prod confirmation flag is never consent, since the agent can add it itself; only the user's words in the transcript count, or an exact-match permissions.allow rule. Read-only prod runs (dry-run, audit, plan, verify/watchdog report modes, GETs) are NOT covered by this rule.",
+      "Running the p2c/p2k/p2l/p2f reconcilers in apply (non-dry-run) mode against prod. Must name: the reconciler and prod.",
+      "Committing, staging, or pushing any `data/*.prod.csv` file to any repository, including rock-security. These files contain personal data (PII). Must name: the file."
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: Favor Church (github.com/favorchurch org)",
+      "**Cloud provider(s)**: None configured",
+      "**Host containment**: The local Mac is the user's own workstation; it is not a sandbox or disposable container. Actions affecting files outside the working repo, shell config, or system state are real and persistent.",
+      "**Repository visibility**: favorchurch/rock-security and favorchurch/forms.favor.church are private (confirmed via gh). Treat any other repository as public unless its visibility is confirmed private; treat visibility recorded as \"unverified\" as public.",
+      "**Internal sharing / snippet hosting**: None configured. Treat public paste/gist services as outside the trust boundary.",
+      "**Secrets management**: Rock credentials live in a local env file (Secrets class); its path is given in the local rules. Reading, printing, or copying it triggers Credential Materialization.",
+      "**Default / protected branches**: Default branch `main`. No classic protected-branch rules are listed and rulesets can't be queried here, so do not treat `main` as unprotected.",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The github.com/favorchurch org; trusted repos are favorchurch/rock-security and favorchurch/forms.favor.church, with their origin remotes.",
+      "**Trusted internal domains**: rock.favor.church (prod), rock-preview.favor.church (preview). Trusting rock.favor.church as a data destination does not relax Production Deploy or Modify Shared Resources.",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: rock.favor.church (prod Rock RMS), rock-preview.favor.church (preview Rock RMS)",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: `data/*.prod.csv` in rock-security contain personal data (PII): never commit, push, paste, or copy them anywhere, and treat them under PII Data Handling. `registers/access-register.csv` holds initials and person ID only, per repo convention. Full congregation/person names appear only in gitignored `backups/`; never commit full names outside that path.",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: rock.favor.church (production), and any remote host or namespace with `prod` or `production` as a whole segment.",
+      "**Protected deployment namespaces / environments**: Rock production (`rock.favor.church`). The default env is preview. Scripts gate prod behind a confirmation flag, but that flag is not user consent.",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag has `prod` or `production` as a whole word or name segment.",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (Rock RMS security provisioning/auditing for Favor Church)",
+      "**Trusted repo**: ~/Git/rock-security and ~/Git/forms.favor.church, with their favorchurch origin remotes. Both are private; confidential (non-personal) material may be committed there but never pushed elsewhere. `data/*.prod.csv` files and full names are never committed.",
+      "**Org-specific CLIs**: Auto Office (`office`), Herdr (`herdr`)"
+    ]
+  },
+  "voiceEnabled": true
+}

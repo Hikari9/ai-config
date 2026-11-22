@@ -1,0 +1,33 @@
+{
+  "providers": {
+    "anthropic": {
+      "headers": {
+        "anthropic-workspace-id": "<your-anthropic-workspace-id>"
+      }
+    },
+    "ollama": {
+      "api": "openai-completions",
+      "apiKey": "<ollama-api-key-or-any-string-for-local>",
+      "baseUrl": "http://127.0.0.1:11434/v1",
+      "models": [
+        {
+          "_launch": true,
+          "contextWindow": 1048576,
+          "id": "glm-5.3-flash:cloud",
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "_launch": true,
+          "id": "qwen3.8:27b",
+          "input": [
+            "text",
+            "image"
+          ],
+          "reasoning": true
+        }
+      ]
+    }
+  }
+}

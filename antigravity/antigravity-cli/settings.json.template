@@ -1,0 +1,20 @@
+{
+  "allowNonWorkspaceAccess": true,
+  "artifactReviewPolicy": "always-proceed",
+  "colorScheme": "tokyo night",
+  "model": "Gemini 4 Hydrogen (Low)",
+  "notifications": true,
+  "permissions": {
+    "allow": [
+      "command(*)"
+    ]
+  },
+  "queuedMessages": "send-immediately",
+  "statusLine": {
+    "type": "command",
+    "command": "{{HOME}}/.gemini/antigravity-cli/statusline.sh"
+  },
+  "toolPermission": "always-proceed",
+  "useG1Credits": true,
+  "verbosity": "high"
+}

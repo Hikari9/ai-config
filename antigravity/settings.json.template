@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{HOME}}/.local/bin/office hook session.start --harness gemini --office-managed",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{HOME}}/.local/bin/office hook prompt.submit --harness gemini --office-managed",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{HOME}}/.local/bin/office hook tool.pre --harness gemini --office-managed",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

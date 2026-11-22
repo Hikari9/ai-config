@@ -1,0 +1,40 @@
+# kind	harness	source (repo-relative)	target (~ = $HOME)
+# link: symlink target -> repo file.
+# json|toml|text: render source template (+ local/<same path minus .template> if present) into target. {{HOME}} becomes $HOME.
+# local-link: symlink target -> local/ file (gitignored); an empty file is created if missing.
+link	claude	claude/CLAUDE.md	~/.claude/CLAUDE.md
+local-link	claude	local/claude/CLAUDE.local.md	~/.claude/CLAUDE.local.md
+link	claude	claude/communication.md	~/.claude/communication.md
+link	claude	claude/RTK.md	~/.claude/RTK.md
+link	claude	claude/rules/context7.md	~/.claude/rules/context7.md
+link	claude	claude/keybindings.json	~/.claude/keybindings.json
+link	claude	claude/wherdr-statusline.sh	~/.claude/wherdr-statusline.sh
+link	claude	claude/hooks/context-mode-cache-heal.mjs	~/.claude/hooks/context-mode-cache-heal.mjs
+link	claude	claude/hooks/env-names	~/.claude/hooks/env-names
+link	claude	claude/hooks/herdr-agent-state.sh	~/.claude/hooks/herdr-agent-state.sh
+link	claude	claude/hooks/hook-gate.sh	~/.claude/hooks/hook-gate.sh
+link	claude	claude/hooks/te-hookd.py	~/.claude/hooks/te-hookd.py
+link	claude	claude/hooks/te-python	~/.claude/hooks/te-python
+link	claude	claude/hooks/rock-key-guard.mjs	~/.claude/hooks/rock-key-guard.mjs
+json	claude	claude/settings.json.template	~/.claude/settings.json
+link	codex	codex/AGENTS.md	~/.codex/AGENTS.md
+link	codex	codex/RTK.md	~/.codex/RTK.md
+link	codex	codex/rules/default.rules	~/.codex/rules/default.rules
+link	codex	codex/herdr-agent-state.sh	~/.codex/herdr-agent-state.sh
+json	codex	codex/hooks.json.template	~/.codex/hooks.json
+toml	codex	codex/config.toml.template	~/.codex/config.toml
+link	antigravity	antigravity/GEMINI.md	~/.gemini/GEMINI.md
+json	antigravity	antigravity/settings.json.template	~/.gemini/settings.json
+link	antigravity	antigravity/antigravity-cli/statusline.sh	~/.gemini/antigravity-cli/statusline.sh
+json	antigravity	antigravity/antigravity-cli/settings.json.template	~/.gemini/antigravity-cli/settings.json
+json	antigravity	antigravity/config/config.json.template	~/.gemini/config/config.json
+json	antigravity	antigravity/config/hooks.json.template	~/.gemini/config/hooks.json
+link	antigravity	antigravity/config/hooks/herdr-agent-state.sh	~/.gemini/config/hooks/herdr-agent-state.sh
+link	pi	pi/AGENTS.md	~/.pi/agent/AGENTS.md
+link	pi	pi/extensions/herdr-agent-state.ts	~/.pi/agent/extensions/herdr-agent-state.ts
+link	pi	pi/extensions/rico-statusline.ts	~/.pi/agent/extensions/rico-statusline.ts
+json	pi	pi/settings.json.template	~/.pi/agent/settings.json
+json	pi	pi/models.json.template	~/.pi/agent/models.json
+link	hermes	hermes/SOUL.md	~/.hermes/SOUL.md
+link	hermes	hermes/agent-hooks/herdr-state.sh	~/.hermes/agent-hooks/herdr-state.sh
+text	hermes	hermes/config.yaml.template	~/.hermes/config.yaml
